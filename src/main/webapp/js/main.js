@@ -1,10 +1,14 @@
-// add jQuery styles to buttons
+// on page load
 $(function(){
-    $( '#test-button' ).button();
+    getSurvey();
+    //if survey wasn't
     $( '#submitAnswerBtn' ).button().hide();
 });
 
-$(document).on('click', '#test-button', function () {
+/**
+ *
+ */
+function getSurvey() {
     $.ajax({
         url : "./getSurvey",
         success : function (respJSON, textStatus, jqXHR) {
@@ -12,7 +16,7 @@ $(document).on('click', '#test-button', function () {
             renderSurvey(respJSON, surveyDate);
         }
     });
-});
+};
 
 $(document).on('click', '#submitAnswerBtn', function () {
     let $surveyForm = $('#surveyForm');

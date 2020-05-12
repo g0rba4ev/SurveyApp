@@ -61,9 +61,9 @@ public class GetSurveyServlet extends HttpServlet {
 
         for(Question question: survey.getQuestionsSet()) {
             ObjectNode questionNode = mapper.createObjectNode();
-            questionNode.put("q_type", question.getType());
+            questionNode.put("type", question.getType());
             questionNode.put("question", question.getQuestion());
-            questionNode.put("q_id", question.getId());
+            questionNode.put("id", question.getId());
             questionsArrayNode.add(questionNode);
         }
 

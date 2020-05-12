@@ -13,16 +13,13 @@
 </head>
 
 <body>
-  <h1>Hello, userName</h1>
-  <input id="test-button" type="button" value="RENDER SURVEY">
-
-
+  <h1>Welcome to survey!</h1>
   <div id="surveyDiv">
     <div id="surveyHead" data-survey-date=""></div>
     <form id="surveyForm">
 
     </form>
-    <input id="submitAnswerBtn" type="button" value="Send answer" hidden>
+    <input id="submitAnswerBtn" type="button" value="Send answer">
   </div>
 
 </body>
