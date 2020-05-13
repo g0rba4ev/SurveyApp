@@ -5,7 +5,6 @@ import apps.g0rba4ev.dao.QuestionDAO;
 import apps.g0rba4ev.dao.SurveyDAO;
 import apps.g0rba4ev.domain.Answer;
 import apps.g0rba4ev.domain.Question;
-import apps.g0rba4ev.domain.Survey;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -13,6 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Date;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Set;
 
 @WebServlet("/postAnswer")
@@ -51,9 +52,12 @@ public class PostAnswerServlet extends HttpServlet {
                 Answer answer = new Answer(question, userName, answerStr, date);
                 aDAO.save(answer);
             }
-
+            // cookie that delete yourself after midnight
             Cookie cookie = new Cookie("userName", userName);
-            cookie.setMaxAge(3*60*60); //TODO correct max age
+            LocalTime current = LocalTime.now();
+            int seconds = (int) ChronoUnit.SECONDS.between(current, LocalTime.MAX);
+            cookie.setMaxAge(seconds);
+
             resp.addCookie(cookie);
             resp.setStatus(HttpServletResponse.SC_OK);
             resp.setHeader("Message", "Answer saved successfully");
