@@ -4,3 +4,17 @@ textarea {
     max-width: 70%;
     min-height: 30px;
 }
+
+#surveyHead {
+    display: grid;
+    grid-template-columns: 1fr 200px;
+}
+
+#surveyDate, #userName {
+    text-align: center;
+    font-size: 30px;
+}
+
+input[readonly] {
+    background-color: #94a0a8;
+}

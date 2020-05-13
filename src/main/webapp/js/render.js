@@ -1,16 +1,10 @@
 /**
  * render survey by template "SURVEY_TPL" Mustache-min.js
  * @param questionsJSON JSON array with questions [{type: , question: , id: }, {}, {}]
- * @param surveyDate date of the survey (actually - survey id)
  * @returns {*}
  */
-function renderSurvey(questionsJSON, surveyDate) {
-    let $surveyHead = $('#surveyHead');
+function renderSurvey(questionsJSON) {
     let $surveyForm = $('#surveyForm');
-
-    $surveyHead.attr("data-survey-date", surveyDate);
-    $surveyHead.html("Survey date: " + surveyDate);
-
     $surveyForm.empty();
     $.each(questionsJSON, function (index, questionObj) {
         let html;
@@ -26,18 +20,17 @@ function renderSurvey(questionsJSON, surveyDate) {
         } else if (questionObj.type === "TEXT") {
             html = Mustache.render(TEXT_QUESTION_TPL, questionObj);
             $surveyForm.append(html);
+            // if question already has answer - set this answer on page
             if(questionObj.hasOwnProperty("answer")){
                 let inputName = "q_" + questionObj.id;
                 $('textarea[name="' + inputName + '"]').val(questionObj.answer);
             }
         }
     })
-    // jQuery enhances standard checkbox
+    // apply jQuery checkbox styles
     $( '[type=radio]' ).checkboxradio({
         icon: false
     });
-    // show submit btn
-    $('#submitAnswerBtn').show();
 }
 
 // radio survey html template for Mustache

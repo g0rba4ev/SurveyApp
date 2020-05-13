@@ -13,13 +13,16 @@
 </head>
 
 <body>
-  <h1>Welcome to survey!</h1>
   <div id="surveyDiv">
-    <div id="surveyHead" data-survey-date=""></div>
+    <div id="surveyHead">
+      <input id="userName" type="text" placeholder="Enter your name">
+      <input id="surveyDate" type="text" readonly>
+    </div>
     <form id="surveyForm">
-
+      <%-- place for survey questions --%>
     </form>
-    <input id="submitAnswerBtn" type="button" value="Send answer">
+    <input id="submitAnswerBtn" type="button" value="Submit answer" hidden>
+    <input id="updateAnswerBtn" type="button" value="Update answer" hidden>
   </div>
 
 </body>

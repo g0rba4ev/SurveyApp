@@ -3,7 +3,7 @@ package apps.g0rba4ev.domain;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import java.sql.Date;
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -13,7 +13,7 @@ public class Survey {
     private Date date;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Question> questionsSet = new LinkedHashSet<>();
+    private Set<Question> questionsSet = new HashSet<>();
 
     public Survey() {
     }

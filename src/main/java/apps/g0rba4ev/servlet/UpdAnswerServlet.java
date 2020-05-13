@@ -13,10 +13,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Date;
-import java.util.Set;
 
-@WebServlet("/postAnswer")
-public class PostAnswerServlet extends HttpServlet {
+@WebServlet("/updAnswer")
+public class UpdAnswerServlet extends HttpServlet {
 
     private QuestionDAO qDAO;
     private AnswerDAO aDAO;
@@ -31,35 +30,31 @@ public class PostAnswerServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
 
-        String userName = req.getHeader("userName");
+        String userName = null;
+        for(Cookie cookie: req.getCookies()) {
+            if("userName".equals(cookie.getName())){
+                userName = cookie.getValue();
+                break;
+            }
+        }
+
         if(userName != null && !userName.equals("")) {
             String dateStr = req.getHeader("surveyDate");
             Date date = Date.valueOf(dateStr);
-            Set<Question> questionsSet = sDAO.findByDate( date ).getQuestionsSet();
-            //check is answer with this userName already accepted today
-            if(!questionsSet.isEmpty()) {
-                Answer answer = aDAO.find(userName, date, questionsSet.iterator().next());
-                if(answer != null) {
-                    resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                    resp.setHeader("Message", "Sorry, today this name is already taken");
-                    return;
-                }
-            }
+            Survey survey = sDAO.findByDate( Date.valueOf(dateStr) );
 
-            for(Question question: questionsSet) {
+            for(Question question: survey.getQuestionsSet()) {
+                Answer answer = aDAO.find(userName, date, question);
                 String answerStr = req.getParameter( "q_" + question.getId() );
-                Answer answer = new Answer(question, userName, answerStr, date);
-                aDAO.save(answer);
+                answer.setAnswer(answerStr);
+                aDAO.update(answer);
             }
 
-            Cookie cookie = new Cookie("userName", userName);
-            cookie.setMaxAge(3*60*60); //TODO correct max age
-            resp.addCookie(cookie);
             resp.setStatus(HttpServletResponse.SC_OK);
-            resp.setHeader("Message", "Answer saved successfully");
+            resp.setHeader("Message", "Answer updated successfully");
         } else {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            resp.setHeader("Message", "User name field is empty");
+            resp.setHeader("Message", "Username is missing in request");
         }
 
     }
