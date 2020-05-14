@@ -5,7 +5,7 @@
     <session-factory>
         <!-- JDBC Database connection settings -->
         <property name="connection.driver_class">org.hsqldb.jdbc.JDBCDriver</property>
-        <property name="connection.url">jdbc:hsqldb:file:D:/All_projects/Java_projects/SURVEY_APP/DB/TEST_DB</property>
+        <property name="connection.url">jdbc:hsqldb:file:./../SURVEY_APP_DB/TEST_DB</property>
         <property name="connection.username">login</property>
         <property name="connection.password">password</property>
         <!-- Select our SQL dialect -->

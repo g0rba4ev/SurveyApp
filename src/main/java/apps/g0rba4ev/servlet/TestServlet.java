@@ -31,7 +31,7 @@ public class TestServlet extends HttpServlet {
         qDAO.save(q3);
         qDAO.save(q4);
 
-        Survey survey1 = new Survey( java.sql.Date.valueOf("2020-05-13") );
+        Survey survey1 = new Survey( java.sql.Date.valueOf("2020-05-14") );
         survey1.addQuestion(q1);
         survey1.addQuestion(q2);
         survey1.addQuestion(q3);
