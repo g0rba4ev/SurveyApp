@@ -3,8 +3,8 @@ package apps.g0rba4ev.domain;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import java.sql.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 public class Survey {
@@ -13,7 +13,7 @@ public class Survey {
     private Date date;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Question> questionsSet = new HashSet<>();
+    private Map<Integer, Question> questionMap = new HashMap<>();
 
     public Survey() {
     }
@@ -30,25 +30,12 @@ public class Survey {
         return date;
     }
 
-    public Set<Question> getQuestionsSet() {
-        return questionsSet;
+    public Map<Integer, Question> getQuestionMap() {
+        return questionMap;
     }
 
-    /**
-     * add question to survey
-     * @param question to be added
-     * @return true if this survey did not already contain the specified question
-     */
-    public boolean addQuestion(Question question) {
-        return questionsSet.add(question);
+    public void setQuestion(int position, Question question) {
+        questionMap.put(position, question);
     }
 
-    /**
-     * remove question from survey
-     * @param question to be removed
-     * @return true if this survey contained the specified question
-     */
-    public boolean removeQuestion(Question question) {
-        return questionsSet.remove(question);
-    }
 }

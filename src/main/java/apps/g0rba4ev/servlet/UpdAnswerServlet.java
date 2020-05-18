@@ -43,7 +43,7 @@ public class UpdAnswerServlet extends HttpServlet {
             Date date = Date.valueOf(dateStr);
             Survey survey = sDAO.findByDate( Date.valueOf(dateStr) );
 
-            for(Question question: survey.getQuestionsSet()) {
+            for(Question question: survey.getQuestionMap().values()) {
                 Answer answer = aDAO.find(userName, date, question);
                 String answerStr = req.getParameter( "q_" + question.getId() );
                 answer.setAnswer(answerStr);

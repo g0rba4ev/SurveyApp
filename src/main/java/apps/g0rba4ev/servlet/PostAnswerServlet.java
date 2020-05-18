@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.sql.Date;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Set;
+import java.util.Map;
 
 @WebServlet("/postAnswer")
 public class PostAnswerServlet extends HttpServlet {
@@ -36,18 +36,18 @@ public class PostAnswerServlet extends HttpServlet {
         if(userName != null && !userName.equals("")) {
             String dateStr = req.getHeader("surveyDate");
             Date date = Date.valueOf(dateStr);
-            Set<Question> questionsSet = sDAO.findByDate( date ).getQuestionsSet();
-            //check is answer with this userName already accepted today
-            if(!questionsSet.isEmpty()) {
-                Answer answer = aDAO.find(userName, date, questionsSet.iterator().next());
-                if(answer != null) {
+            Map<Integer, Question> questionMap = sDAO.findByDate(date).getQuestionMap();
+            //check is answer with this userName already accepted today (name is already taken today)
+            if(!questionMap.isEmpty()) {
+                Question anyQuestion = questionMap.values().iterator().next(); // get any question for check
+                if( aDAO.find(userName, date, anyQuestion) != null) {
                     resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     resp.setHeader("Message", "Sorry, today this name is already taken");
                     return;
                 }
             }
 
-            for(Question question: questionsSet) {
+            for(Question question: questionMap.values()) {
                 String answerStr = req.getParameter( "q_" + question.getId() );
                 Answer answer = new Answer(question, userName, answerStr, date);
                 aDAO.save(answer);
@@ -55,7 +55,7 @@ public class PostAnswerServlet extends HttpServlet {
             // cookie that delete yourself after midnight
             Cookie cookie = new Cookie("userName", userName);
             LocalTime current = LocalTime.now();
-            int seconds = (int) ChronoUnit.SECONDS.between(current, LocalTime.MAX);
+            int seconds = (int) ChronoUnit.SECONDS.between(current, LocalTime.MAX); // seconds before midnight
             cookie.setMaxAge(seconds);
 
             resp.addCookie(cookie);

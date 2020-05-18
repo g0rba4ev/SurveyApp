@@ -34,7 +34,7 @@ public class AnswerDAO {
 
     /**
      * find Answer by userName, Date and Question
-     * @return Answer
+     * @return Answer (or null if Answer not found)
      */
     public Answer find(String userName, Date date, Question question) {
         try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {

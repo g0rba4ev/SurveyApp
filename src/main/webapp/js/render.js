@@ -1,6 +1,6 @@
 /**
  * render survey by template "SURVEY_TPL" Mustache-min.js
- * @param questionsJSON JSON array with questions [{type: , question: , id: }, {}, {}]
+ * @param questionsJSON JSON array with questions [{number: , type: , question: , id: }, {}, {}]
  * @returns {*}
  */
 function renderSurvey(questionsJSON) {
@@ -36,7 +36,7 @@ function renderSurvey(questionsJSON) {
 // radio survey html template for Mustache
 const RADIO_QUESTION_TPL =  '<div>' +
                                 '<fieldset>' +
-                                    '<legend>question</legend>' +
+                                    '<legend>question {{number}}</legend>' +
                                     '<h2 align="center">{{question}}</h2>' +
                                     '<div align="center">' +
                                         '<label for="q{{id}}_1">1</label>' +
@@ -66,7 +66,7 @@ const RADIO_QUESTION_TPL =  '<div>' +
 // text survey html template for Mustache
 const TEXT_QUESTION_TPL =   '<div class="question">' +
                                 '<fieldset>' +
-                                    '<legend>question</legend>' +
+                                    '<legend>question {{number}}</legend>' +
                                     '<h2 align="center">{{question}}</h2>' +
                                     '<div align="center">' +
                                         '<textarea placeholder="Enter your answer" name="q_{{id}}" required></textarea>' +

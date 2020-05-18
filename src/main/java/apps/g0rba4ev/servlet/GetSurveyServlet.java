@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Date;
+import java.util.Arrays;
+import java.util.Map;
 
 
 @WebServlet("/getSurvey")
@@ -60,15 +62,20 @@ public class GetSurveyServlet extends HttpServlet {
      * transform Survey to JSON (and if userName not null, add his answers to this JSON)
      * @param survey
      * @param userName whose answers
-     * @param date
+     * @param date for finding answer (if exist)
      * @return JSON string with survey (and user's answers)
      */
     private String surveyToJson(Survey survey, String userName, Date date) {
         ObjectMapper mapper = new ObjectMapper();
         ArrayNode questionsArrayNode = mapper.createArrayNode();
 
-        for(Question question: survey.getQuestionsSet()) {
+        Map<Integer, Question> questionMap = survey.getQuestionMap();
+        Integer[] keys = questionMap.keySet().toArray(new Integer[0]);
+        Arrays.sort(keys);
+        for(Integer i: keys) {
             ObjectNode questionNode = mapper.createObjectNode();
+            Question question = questionMap.get(i);
+            questionNode.put("number", i);
             questionNode.put("type", question.getType());
             questionNode.put("question", question.getQuestion());
             questionNode.put("id", question.getId());
