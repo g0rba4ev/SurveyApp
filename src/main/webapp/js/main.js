@@ -3,6 +3,7 @@ $(function(){
     // apply jQuery styles
     $( '#submitAnswerBtn' ).button().hide();
     $( '#updateAnswerBtn' ).button().hide();
+    $( '#logoutBtn' ).button();
 
     getSurvey();
 });
@@ -15,16 +16,12 @@ function getSurvey() {
         url : "./getSurvey",
         success : function (respJSON, textStatus, jqXHR) {
             $('#surveyDate').val( jqXHR.getResponseHeader("surveyDate") );
-            let $userName = $('#userName');
-            $userName.val( jqXHR.getResponseHeader("userName") );
             if(respJSON[0].hasOwnProperty("answer")) {
                 $( '#submitAnswerBtn' ).hide();
                 $( '#updateAnswerBtn' ).show();
-                $userName.attr("readonly", true);
             } else {
                 $( '#submitAnswerBtn' ).show();
                 $( '#updateAnswerBtn' ).hide();
-                $userName.attr("readonly", false);
             }
             renderSurvey(respJSON);
         }
@@ -40,7 +37,6 @@ $(document).on('click', '#submitAnswerBtn', function () {
         data: $surveyForm.serialize(),
         headers: {
             "surveyDate": $('#surveyDate').val(),
-            "userName": $('#userName').val()
         },
         statusCode: {
             200: function(respJSON, textStatus, jqXHR) {
@@ -63,7 +59,6 @@ $(document).on('click', '#updateAnswerBtn', function () {
         data: $surveyForm.serialize(),
         headers: {
             "surveyDate": $('#surveyDate').val(),
-            "userName": $('#userName').val()
         },
         statusCode: {
             200: function(respJSON, textStatus, jqXHR) {

@@ -2,8 +2,10 @@ package apps.g0rba4ev.servlet;
 
 import apps.g0rba4ev.dao.AnswerDAO;
 import apps.g0rba4ev.dao.SurveyDAO;
+import apps.g0rba4ev.domain.Answer;
 import apps.g0rba4ev.domain.Question;
 import apps.g0rba4ev.domain.Survey;
+import apps.g0rba4ev.domain.User;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.ObjectNode;
@@ -44,28 +46,21 @@ public class GetSurveyServlet extends HttpServlet {
             return;
         }
 
-        String userName = null;
-        for(Cookie cookie: req.getCookies()) {
-            if("userName".equals(cookie.getName())){
-                userName = cookie.getValue();
-                break;
-            }
-        }
+        User user = (User) req.getSession().getAttribute("loggedUser");
 
-        String json = surveyToJson(survey, userName, date);
+        String json = surveyToJson(survey, user, date);
         resp.setHeader("surveyDate", survey.getDate().toString());
-        resp.setHeader("userName", userName);
         resp.getWriter().print(json);
     }
 
     /**
      * transform Survey to JSON (and if userName not null, add his answers to this JSON)
      * @param survey
-     * @param userName whose answers
+     * @param user whose answers
      * @param date for finding answer (if exist)
      * @return JSON string with survey (and user's answers)
      */
-    private String surveyToJson(Survey survey, String userName, Date date) {
+    private String surveyToJson(Survey survey, User user, Date date) {
         ObjectMapper mapper = new ObjectMapper();
         ArrayNode questionsArrayNode = mapper.createArrayNode();
 
@@ -79,10 +74,13 @@ public class GetSurveyServlet extends HttpServlet {
             questionNode.put("type", question.getType());
             questionNode.put("question", question.getQuestion());
             questionNode.put("id", question.getId());
-            if(userName != null) {
-                String answer = aDAO.find(userName, date, question).getAnswer();
-                questionNode.put("answer", answer);
+
+            Answer answer = aDAO.find(user, date, question);
+            if(answer != null){
+                questionNode.put("answer", answer.getAnswer());
+
             }
+
             questionsArrayNode.add(questionNode);
         }
 

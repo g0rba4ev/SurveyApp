@@ -5,15 +5,13 @@ import apps.g0rba4ev.dao.QuestionDAO;
 import apps.g0rba4ev.dao.SurveyDAO;
 import apps.g0rba4ev.domain.Answer;
 import apps.g0rba4ev.domain.Question;
+import apps.g0rba4ev.domain.User;
 
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Date;
-import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Map;
 
 @WebServlet("/postAnswer")
@@ -32,39 +30,27 @@ public class PostAnswerServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
 
-        String userName = req.getHeader("userName");
-        if(userName != null && !userName.equals("")) {
-            String dateStr = req.getHeader("surveyDate");
-            Date date = Date.valueOf(dateStr);
-            Map<Integer, Question> questionMap = sDAO.findByDate(date).getQuestionMap();
-            //check is answer with this userName already accepted today (name is already taken today)
-            if(!questionMap.isEmpty()) {
-                Question anyQuestion = questionMap.values().iterator().next(); // get any question for check
-                if( aDAO.find(userName, date, anyQuestion) != null) {
-                    resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                    resp.setHeader("Message", "Sorry, today this name is already taken");
-                    return;
-                }
+        User user = (User) req.getSession().getAttribute("loggedUser");
+        String dateStr = req.getHeader("surveyDate");
+        Date date = Date.valueOf(dateStr);
+        Map<Integer, Question> questionMap = sDAO.findByDate(date).getQuestionMap();
+        //check - is answer of this user already accepted today
+        if(!questionMap.isEmpty()) {
+            Question anyQuestion = questionMap.values().iterator().next(); // get any question for check
+            if( aDAO.find(user, date, anyQuestion) != null) {
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                resp.setHeader("Message", "Error: today you already sent the answers, you can only update it");
+                return;
             }
-
-            for(Question question: questionMap.values()) {
-                String answerStr = req.getParameter( "q_" + question.getId() );
-                Answer answer = new Answer(question, userName, answerStr, date);
-                aDAO.save(answer);
-            }
-            // cookie that delete yourself after midnight
-            Cookie cookie = new Cookie("userName", userName);
-            LocalTime current = LocalTime.now();
-            int seconds = (int) ChronoUnit.SECONDS.between(current, LocalTime.MAX); // seconds before midnight
-            cookie.setMaxAge(seconds);
-
-            resp.addCookie(cookie);
-            resp.setStatus(HttpServletResponse.SC_OK);
-            resp.setHeader("Message", "Answer saved successfully");
-        } else {
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            resp.setHeader("Message", "User name field is empty");
         }
+
+        for(Question question: questionMap.values()) {
+            String answerStr = req.getParameter( "q_" + question.getId() );
+            Answer answer = new Answer(question, user, answerStr, date);
+            aDAO.save(answer);
+        }
+        resp.setStatus(HttpServletResponse.SC_OK);
+        resp.setHeader("Message", "Answer saved successfully");
 
     }
 

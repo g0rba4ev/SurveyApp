@@ -8,7 +8,7 @@ import java.sql.Date;
 @Table(
         name = "answers",
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = {"q_id", "userName", "date"})
+                @UniqueConstraint(columnNames = {"q_id", "user_id", "date"})
         }
 )
 public class Answer {
@@ -21,8 +21,9 @@ public class Answer {
     @JoinColumn(name = "q_id", nullable = false)
     private Question question;
 
-    @Column(nullable = false)
-    private String userName;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @Column(nullable = false)
     private String answer;
@@ -33,9 +34,9 @@ public class Answer {
     public Answer() {
     }
 
-    public Answer(Question question, String userName, String answer, Date date) {
+    public Answer(Question question, User user, String answer, Date date) {
         this.question = question;
-        this.userName = userName;
+        this.user = user;
         this.answer = answer;
         this.date = date;
     }
@@ -52,12 +53,12 @@ public class Answer {
         this.question = question;
     }
 
-    public String getUserName() {
-        return userName;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getAnswer() {
@@ -76,13 +77,4 @@ public class Answer {
         this.date = date;
     }
 
-    @Override
-    public String toString() {
-        return "Answer{" +
-                "id=" + id +
-                ", question=" + question +
-                ", user=" + userName +
-                ", answer='" + answer + '\'' +
-                '}';
-    }
 }

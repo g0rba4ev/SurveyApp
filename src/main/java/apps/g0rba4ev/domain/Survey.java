@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Entity
+@Table(name = "survey")
 public class Survey {
 
     @Id

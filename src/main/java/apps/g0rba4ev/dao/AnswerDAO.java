@@ -2,6 +2,7 @@ package apps.g0rba4ev.dao;
 
 import apps.g0rba4ev.domain.Answer;
 import apps.g0rba4ev.domain.Question;
+import apps.g0rba4ev.domain.User;
 import apps.g0rba4ev.util.HibernateSessionFactoryUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -36,12 +37,12 @@ public class AnswerDAO {
      * find Answer by userName, Date and Question
      * @return Answer (or null if Answer not found)
      */
-    public Answer find(String userName, Date date, Question question) {
+    public Answer find(User user, Date date, Question question) {
         try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
             Query query = session.createQuery("FROM Answer as answer where " +
-                    "answer.question=:question and answer.userName=:userName and answer.date=:date");
+                    "answer.question=:question and answer.user=:user and answer.date=:date");
             query.setParameter("question", question);
-            query.setParameter("userName", userName);
+            query.setParameter("user", user);
             query.setParameter("date", date);
             List listAnswers = query.list();
             if(listAnswers.isEmpty()){

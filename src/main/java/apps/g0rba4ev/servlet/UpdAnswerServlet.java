@@ -6,6 +6,8 @@ import apps.g0rba4ev.dao.SurveyDAO;
 import apps.g0rba4ev.domain.Answer;
 import apps.g0rba4ev.domain.Question;
 import apps.g0rba4ev.domain.Survey;
+import apps.g0rba4ev.domain.User;
+import org.graalvm.compiler.lir.LIRInstruction;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -30,32 +32,20 @@ public class UpdAnswerServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
 
-        String userName = null;
-        for(Cookie cookie: req.getCookies()) {
-            if("userName".equals(cookie.getName())){
-                userName = cookie.getValue();
-                break;
-            }
+        User user = (User) req.getSession().getAttribute("loggedUser");
+        String dateStr = req.getHeader("surveyDate");
+        Date date = Date.valueOf(dateStr);
+        Survey survey = sDAO.findByDate( Date.valueOf(dateStr) );
+
+        for(Question question: survey.getQuestionMap().values()) {
+            Answer answer = aDAO.find(user, date, question);
+            String answerStr = req.getParameter( "q_" + question.getId() );
+            answer.setAnswer(answerStr);
+            aDAO.update(answer);
         }
 
-        if(userName != null && !userName.equals("")) {
-            String dateStr = req.getHeader("surveyDate");
-            Date date = Date.valueOf(dateStr);
-            Survey survey = sDAO.findByDate( Date.valueOf(dateStr) );
-
-            for(Question question: survey.getQuestionMap().values()) {
-                Answer answer = aDAO.find(userName, date, question);
-                String answerStr = req.getParameter( "q_" + question.getId() );
-                answer.setAnswer(answerStr);
-                aDAO.update(answer);
-            }
-
-            resp.setStatus(HttpServletResponse.SC_OK);
-            resp.setHeader("Message", "Answer updated successfully");
-        } else {
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            resp.setHeader("Message", "Username is missing in request");
-        }
+        resp.setStatus(HttpServletResponse.SC_OK);
+        resp.setHeader("Message", "Answer updated successfully");
 
     }
 
