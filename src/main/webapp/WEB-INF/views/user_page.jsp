@@ -4,13 +4,13 @@
 <head>
   <meta charset="utf-8">
   <title>Main</title>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/user-style.css">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/jquery-ui.css">
   <script src="${pageContext.request.contextPath}/js/libs/jquery.js"></script>
   <script src="${pageContext.request.contextPath}/js/libs/jquery-ui.js"></script>
   <script src="${pageContext.request.contextPath}/js/libs/mustache.min.js"></script>
-  <script src="${pageContext.request.contextPath}/js/main.js"></script>
-  <script src="${pageContext.request.contextPath}/js/render.js"></script>
+  <script src="${pageContext.request.contextPath}/js/user-main.js"></script>
+  <script src="${pageContext.request.contextPath}/js/user-render.js"></script>
 </head>
 
 <body>
