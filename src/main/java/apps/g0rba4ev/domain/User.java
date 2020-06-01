@@ -34,7 +34,12 @@ public class User {
     public User(String login, String password, String role) {
         this.login = login;
         this.password = password;
-        this.role = role;
+        if (role.equals("admin")) {
+            this.role = "admin";
+        } else {
+            this.role = "user";
+        }
+
     }
 
     public int getId() {

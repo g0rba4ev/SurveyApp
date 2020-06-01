@@ -7,10 +7,8 @@ import apps.g0rba4ev.domain.Answer;
 import apps.g0rba4ev.domain.Question;
 import apps.g0rba4ev.domain.Survey;
 import apps.g0rba4ev.domain.User;
-import org.graalvm.compiler.lir.LIRInstruction;
 
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
