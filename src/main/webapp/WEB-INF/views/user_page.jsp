@@ -9,8 +9,8 @@
   <script src="${pageContext.request.contextPath}/js/libs/jquery.js"></script>
   <script src="${pageContext.request.contextPath}/js/libs/jquery-ui.js"></script>
   <script src="${pageContext.request.contextPath}/js/libs/mustache.min.js"></script>
-  <script src="${pageContext.request.contextPath}/js/user-main.js"></script>
-  <script src="${pageContext.request.contextPath}/js/user-render.js"></script>
+  <script src="${pageContext.request.contextPath}/js/user/user-main.js"></script>
+  <script src="${pageContext.request.contextPath}/js/user/user-render.js"></script>
 </head>
 
 <body>

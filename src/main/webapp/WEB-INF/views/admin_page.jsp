@@ -5,7 +5,7 @@
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/jquery-ui.css">
   <script src="${pageContext.request.contextPath}/js/libs/jquery.js"></script>
   <script src="${pageContext.request.contextPath}/js/libs/jquery-ui.js"></script>
-  <script src="${pageContext.request.contextPath}/js/admin-main.js"></script>
+  <script src="${pageContext.request.contextPath}/js/admin/admin-main.js"></script>
 </head>
 <body>
 <div id="tabs">

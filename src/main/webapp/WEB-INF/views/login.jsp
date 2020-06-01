@@ -5,7 +5,7 @@
   <script src="${pageContext.request.contextPath}/js/libs/jquery.js"></script>
   <script src="${pageContext.request.contextPath}/js/libs/crypto-js/crypto-js.js"></script>
   <script src="${pageContext.request.contextPath}/js/libs/crypto-js/sha256.js"></script>
-  <script src="${pageContext.request.contextPath}/js/login.js"></script>
+  <script src="${pageContext.request.contextPath}/js/user/login.js"></script>
 </head>
 
 <body>
