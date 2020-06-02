@@ -1,5 +1,7 @@
 // on page load
 $(function(){
+    $('#loginBtn').button();
+
     $('#login_form').submit(function(e) {
         e.preventDefault();
         let login = $('#login').val();
