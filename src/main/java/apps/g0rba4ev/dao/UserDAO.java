@@ -47,4 +47,12 @@ public class UserDAO {
         }
     }
 
+
+    public List<User> getAll() {
+        try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
+            Query<User> query = session.createQuery("FROM User as user order by user.role, user.login");
+            return query.list();
+        }
+    }
+
 }

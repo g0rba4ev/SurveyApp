@@ -3,11 +3,14 @@
 <head>
   <title>Title</title>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/jquery-ui.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin-page.css">
   <script src="${pageContext.request.contextPath}/js/libs/jquery.js"></script>
   <script src="${pageContext.request.contextPath}/js/libs/jquery-ui.js"></script>
   <script src="${pageContext.request.contextPath}/js/libs/crypto-js/crypto-js.js"></script>
   <script src="${pageContext.request.contextPath}/js/libs/crypto-js/sha256.js"></script>
+  <script src="${pageContext.request.contextPath}/js/libs/mustache.min.js"></script>
   <script src="${pageContext.request.contextPath}/js/admin/admin-main.js"></script>
+  <script src="${pageContext.request.contextPath}/js/admin/admin-render.js"></script>
 </head>
 <body>
 <div id="tabs">
@@ -20,9 +23,9 @@
     <fieldset>
       <legend>Add new user</legend>
       <div>
-        <input id="new-login" placeholder="Enter new login">
-        <input id="new-pwd" placeholder="Enter new password">
-        <select id="new-role">
+        <input class="ui-button-like" id="new-login" placeholder="Enter new login">
+        <input class="ui-button-like" id="new-pwd" placeholder="Enter new password">
+        <select class="ui-button-like" id="new-role">
           <option>user</option>
           <option>admin</option>
         </select>
@@ -32,11 +35,15 @@
     <fieldset>
       <legend>Change user password</legend>
       <div>
-        <input id="login" placeholder="Enter user login">
-        <input id="pwd" placeholder="Enter new password">
+        <input class="ui-button-like" id="login" placeholder="Enter user login">
+        <input class="ui-button-like" id="pwd" placeholder="Enter new password">
         <input id="change-user-pwd" class="button" type="button" value="Change password">
       </div>
     </fieldset>
+
+    <br/>
+    <table id="users-table"></table>
+
   </div>
   <div id="statistics-view-tab">
     Посмотреть статистичку

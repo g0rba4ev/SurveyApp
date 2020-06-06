@@ -3,9 +3,11 @@ $(function () {
     // initialize jQuery tabs
     $('#tabs').tabs();
     // tabs with class="tab-link" become actually links
-    $("li.tab-link a").unbind('click');
-    // initialize jQuery button
-    $('#logoutBtn').button();
+    $('li.tab-link a').unbind('click');
+    // apply jQuery styles to buttons
+    $('.button').button();
+
+    refreshUsersTable();
 });
 
 /* USER MANAGEMENT */
@@ -33,6 +35,7 @@ $(document).on('click', '#add-new-user', function () {
                 alert( jqXHR.getResponseHeader("Message") );
                 $newLogin.val("");
                 $newPassword.val("");
+                refreshUsersTable();
             },
             400: function(jqXHR) {
                 alert( "Error: " + jqXHR.getResponseHeader("Message") );
@@ -69,3 +72,20 @@ $(document).on('click', '#change-user-pwd', function () {
         }
     });
 });
+
+// refresh users table through ajax
+function refreshUsersTable() {
+    let $usersTable = $('#users-table');
+    $.ajax({
+        url : "./admin/getUsers",
+        method: "GET",
+        statusCode: {
+            200: function(respJSON, textStatus, jqXHR) {
+                $usersTable.html( renderUsersTable(respJSON) );
+            },
+            400: function(jqXHR) {
+                alert( "Error: " + jqXHR.getResponseHeader("Message") );
+            }
+        }
+    });
+}
